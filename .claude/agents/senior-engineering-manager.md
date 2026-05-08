@@ -70,6 +70,7 @@ Reviews are direct and specific -- issue explicit approval or rejection with a c
 - Never write a step into `delivery-tracker.md` without an explicit done condition -- every step must state what "complete" means so the orchestrator can verify it, not infer it
 - Source code goes directly under `src/` (e.g. `src/backend/`, `src/frontend/`, `src/db/`). Never approve artifacts that place code in feature-named subfolders under `src/`. Feature names belong only under `projects/`.
 - Never include a stage marked `[-]` in the implementation plan -- before writing any phase or task, check `feature-setup.md`; any stage marked `[-]` must be omitted entirely; do not document, sequence, or reference tasks that belong to a skipped stage
+- Write the implementation plan to `workflow/implementation-plan.md` as a standalone artifact -- never write it directly into `delivery-tracker.md`; seed Stage 4 and Stage 5 of `delivery-tracker.md` only after the human has approved `implementation-plan.md`
 
 ## Commit conventions
 

@@ -29,6 +29,7 @@ Design docs and plans live under `generated-docs/`. Production artifacts (code, 
 | Mocks | `generated-docs/design/` | Designer writes, PM approves | `senior-ux-ui-designer.md` |
 | Feature Setup | `workflow/feature-setup.md` | Filled in by `/feature-init` (phase config, deployment target, context) | `feature-init` skill |
 | Kickoff Plan | `workflow/kickoff-plan.md` | Orchestrator writes, human approves | `kickoff-prompt.md` |
+| Implementation Plan | `workflow/implementation-plan.md` + `workflow/implementation-plan.html` | EM writes, human approves; steps then seeded into delivery-tracker.md | `senior-engineering-manager.md` |
 | System Architecture | `generated-docs/architecture/sys-arch.md` + `generated-docs/architecture/sys-arch.html` | Arch writes, EM approves | `senior-software-architect.md` |
 | Deployment Plan | `generated-docs/architecture/deployment-plan.md` + `generated-docs/architecture/deployment-plan.html` | DevOps writes, Human approves | `senior-devops-engineer.md` |
 | Eng Plans (HLD) | `generated-docs/architecture/hld.md` + `generated-docs/architecture/hld.html` | EM writes, EM approves | `senior-engineering-manager.md` |

@@ -49,8 +49,9 @@ Toggle rules:
   - [ ] 👤💾 **HUMAN:** review and approve high-level design
 
 - [ ] **Implementation Plan**
-  - [ ] **EM:** produce detailed implementation plan, replace Stage 4 and Stage 5 skeleton steps with artifact-specific tasks; every step written must include a done condition (e.g. "done when: Status: Approved written to file" or "done when: human confirms")
+  - [ ] **EM:** produce detailed implementation plan → [Implementation Plan]; write Stage 4 and Stage 5 steps to `workflow/implementation-plan.md` as a standalone file; every step must include a done condition (e.g. "done when: Status: Approved written to file" or "done when: human confirms")
   - [ ] 👤💾 **HUMAN:** review and approve implementation plan
+  - [ ] **EM:** seed approved steps into Stage 4 and Stage 5 of `delivery-tracker.md`, replacing the skeleton
 
 ---
 

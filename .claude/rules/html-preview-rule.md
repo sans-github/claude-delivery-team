@@ -6,6 +6,7 @@ Every time an agent writes **or updates** any of the following artifacts, it mus
 |---|---|
 | PRD | `[feature-folder]/product-specs/prd.md` |
 | Kickoff Plan | `[feature-folder]/workflow/kickoff-plan.md` |
+| Implementation Plan | `[feature-folder]/workflow/implementation-plan.md` |
 | System Architecture | `[feature-folder]/generated-docs/architecture/sys-arch.md` |
 | High-Level Design | `[feature-folder]/generated-docs/architecture/hld.md` |
 | BE Detailed Design | `[feature-folder]/generated-docs/architecture/be-detailed-design.md` |
