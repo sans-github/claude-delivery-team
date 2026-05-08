@@ -21,12 +21,33 @@ The HTML file lives in the same folder as the MD, with the same base name (e.g. 
 ```bash
 CSS='body{max-width:800px;margin:2rem auto;padding:0 1rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;color:#24292e}h1,h2,h3{border-bottom:1px solid #eaecef;padding-bottom:.3em;margin-top:1.5em}a{color:#0366d6}code{background:#f6f8fa;padding:.2em .4em;border-radius:3px;font-size:85%}pre{background:#f6f8fa;padding:16px;border-radius:6px;overflow:auto}pre code{background:none;padding:0}blockquote{padding:0 1em;color:#6a737d;border-left:.25em solid #dfe2e5;margin:0 0 16px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #dfe2e5;padding:6px 13px}tr:nth-child(2n){background:#f6f8fa}img{max-width:100%}'
 
-pandoc "$MD_FILE" -o "$HTML_FILE" --standalone \
+pandoc "$MD_FILE" -f gfm -o "$HTML_FILE" --standalone \
   --metadata title="$(basename "$MD_FILE" .md)" \
   --variable "header-includes=<style>${CSS}</style>"
 ```
 
 Substitute `$MD_FILE` and `$HTML_FILE` with the actual paths. Run this as a single Bash call immediately after writing the MD.
+
+## Markdown writing rules for correct HTML rendering
+
+**Always insert a blank line before a pipe table.** GFM requires it; without it the table collapses into a paragraph in the HTML output.
+
+```markdown
+Existing stack confirmed from `src/`:
+
+| Layer | Technology |
+|-------|------------|
+```
+
+Not:
+
+```markdown
+Existing stack confirmed from `src/`:
+| Layer | Technology |
+|-------|------------|
+```
+
+**Task list items (`- [ ]`, `- [x]`) render correctly** only when `-f gfm` is passed to pandoc (already included in the command above).
 
 ## If pandoc is not installed
 
