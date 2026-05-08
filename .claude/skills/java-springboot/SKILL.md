@@ -124,6 +124,13 @@ The BE agent writes all schema files (`src/db/schema/`) and migration files (`sr
 - **Password Encoding:** Always encode passwords using a strong hashing algorithm like BCrypt.
 - **Input Sanitization:** Prevent SQL injection by using Spring Data JPA or parameterized queries. Prevent Cross-Site Scripting (XSS) by properly encoding output.
 
+## API Documentation (SpringDoc OpenAPI)
+
+- **Dependency:** Add `springdoc-openapi-starter-webmvc-ui:2.8.8` to `pom.xml`. Zero config needed for Spring Boot 3.x.
+- **Auto-generated endpoints:** `/v3/api-docs` (OpenAPI JSON), `/swagger-ui.html` (UI) -- no controller changes required.
+- **Optional annotations:** `@Tag`, `@Operation`, `@ApiResponse`, `@Schema` enrich the spec with descriptions and examples but are not required.
+- **Spec export:** After implementation, run `curl http://localhost:8080/v3/api-docs -o generated-docs/contracts/openapi.json` and commit with message `export openapi spec for <feature> #<issue>`.
+
 ## Code Style
 
 - **Ruleset:** Google Java Style Guide enforced via Checkstyle.

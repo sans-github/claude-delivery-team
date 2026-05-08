@@ -142,7 +142,7 @@ Toggle rules:
   - Detect BE type: `src/` contains `pom.xml` → Maven (`mvn spring-boot:run`), `build.gradle` → Gradle (`./gradlew bootRun`), `requirements.txt` or `pyproject.toml` → Python (`uvicorn` / `python -m ...`), `package.json` at BE root → Node (`npm run dev` or `npm start`)
   - Detect FE type: look for `package.json` under FE root; if `vite` is in `devDependencies` → `npm run dev`; otherwise `npm start`
   - Derive ports from config files where present: `src/*/src/main/resources/application.properties` (server.port), `vite.config.ts` (server.port), `.env` (PORT / VITE_PORT); fall back to well-known defaults (BE: 8080, FE: 5173)
-  - Script must: use relative paths from repo root, echo what is spawning and on which port, print clickable URLs after both processes are up, trap Ctrl+C to kill both background processes cleanly
+  - Script must: use relative paths from repo root, echo what is spawning and on which port, print clickable URLs after both processes are up (include `http://localhost:{port}/swagger-ui.html` if `springdoc-openapi-starter-webmvc-ui` is present in `pom.xml`), trap Ctrl+C to kill both background processes cleanly
   - Script is generated fresh from the actual codebase -- never copied from a static template
   - done when: `scripts/dev.sh` exists at repo root, is executable (`chmod +x`), and correctly reflects the detected stack and ports
 

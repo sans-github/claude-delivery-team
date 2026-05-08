@@ -163,9 +163,11 @@ BE and FE do not receive formal artifact handoffs from PM. EM is the kickoff poi
 
 **BE provides to QA:**
 - BE Artifacts + BE Test Docs -- required before QA can author BE automation
+- `generated-docs/contracts/openapi.json` -- exported OpenAPI spec (Spring Boot projects only); enables QA to drive contract-level API assertions
 
 **QA depends on from BE:**
 - BE Artifacts + BE Test Docs -- received from BE before authoring BE automation
+- `generated-docs/contracts/openapi.json` -- Spring Boot projects only; if present, use it to validate response shapes against the spec
 
 ---
 
