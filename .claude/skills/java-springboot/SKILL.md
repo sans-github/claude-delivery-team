@@ -135,6 +135,62 @@ The BE agent writes all schema files (`src/db/schema/`) and migration files (`sr
 - **Optional annotations:** `@Tag`, `@Operation`, `@ApiResponse`, `@Schema` enrich the spec with descriptions and examples but are not required.
 - **Spec export:** After implementation, run `curl http://localhost:8080/v3/api-docs -o generated-docs/contracts/openapi.json` and commit with message `export openapi spec for <feature> #<issue>`.
 
+## OTEL agent setup
+
+The OTEL Java agent must be attached in every environment. See `be-logging` skill for why.
+
+### Local dev
+
+Set `JAVA_TOOL_OPTIONS` in your shell or `.env` before running the app:
+
+```bash
+export JAVA_TOOL_OPTIONS="-javaagent:/opt/otel/opentelemetry-javaagent.jar"
+export OTEL_SERVICE_NAME=my-service
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+export OTEL_LOGS_EXPORTER=otlp
+```
+
+Or via Maven plugin in `pom.xml` so it applies to every `mvn spring-boot:run` without manual export:
+
+```xml
+<plugin>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-maven-plugin</artifactId>
+  <configuration>
+    <agents>
+      <agent>${project.basedir}/../../infra/otel/opentelemetry-javaagent.jar</agent>
+    </agents>
+    <environmentVariables>
+      <OTEL_SERVICE_NAME>my-service</OTEL_SERVICE_NAME>
+      <OTEL_EXPORTER_OTLP_ENDPOINT>http://localhost:4317</OTEL_EXPORTER_OTLP_ENDPOINT>
+      <OTEL_LOGS_EXPORTER>otlp</OTEL_LOGS_EXPORTER>
+    </environmentVariables>
+  </configuration>
+</plugin>
+```
+
+Store the agent jar at a committed path (e.g. `infra/otel/opentelemetry-javaagent.jar`) so all developers use the same version without manual downloads.
+
+### Docker
+
+Copy the agent jar into the image and set `JAVA_TOOL_OPTIONS` so it is inherited by the JVM process automatically -- no `CMD` changes required:
+
+```dockerfile
+COPY infra/otel/opentelemetry-javaagent.jar /opt/otel/opentelemetry-javaagent.jar
+ENV JAVA_TOOL_OPTIONS="-javaagent:/opt/otel/opentelemetry-javaagent.jar"
+```
+
+Pass OTEL config as environment variables at `docker run` time or via `docker-compose.yml`:
+
+```yaml
+environment:
+  OTEL_SERVICE_NAME: my-service
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+  OTEL_LOGS_EXPORTER: otlp
+```
+
+Do not hardcode `OTEL_EXPORTER_OTLP_ENDPOINT` in the image -- it differs between local, staging, and prod.
+
 ## Code Style
 
 - **Ruleset:** Google Java Style Guide enforced via Checkstyle.

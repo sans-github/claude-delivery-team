@@ -1,6 +1,6 @@
 ---
 name: be-logging
-description: Backend logging conventions for Java/Spring Boot -- structured JSON output, MDC correlation IDs, access vs application log separation, Splunk/Datadog compatible format, and per-layer logging guidance. Use when implementing or reviewing any logging in the backend.
+description: Backend logging conventions for Java/Spring Boot -- structured JSON output, OTEL-based trace correlation, access vs application log separation, Splunk/Datadog compatible format, and per-layer logging guidance. Use when implementing or reviewing any logging in the backend.
 ---
 
 # Backend Logging Conventions
@@ -10,6 +10,7 @@ description: Backend logging conventions for Java/Spring Boot -- structured JSON
 - **Abstraction:** SLF4J (`org.slf4j.Logger`) -- always code against the abstraction, never against the implementation directly.
 - **Implementation:** Logback (Spring Boot default) or Log4j2. Do not use log4j v1 -- it is deprecated and unsupported.
 - **Format:** Structured JSON. JSON is natively parsed by Splunk HEC, Datadog, Cloudwatch Logs Insights, and Loki without custom extraction rules. Do not use plain-text appenders in non-local environments.
+- **Trace correlation:** OpenTelemetry Java agent (default). Attach via JVM `-javaagent` flag -- no code changes required. The agent injects `trace_id` and `span_id` into MDC on every request thread automatically, including across async boundaries for common executors. If the agent cannot be used (constrained environment, Lambda cold-start sensitivity), fall back to the manual `TraceIdFilter` described below.
 
 ## Log output separation
 
@@ -43,11 +44,40 @@ time=[20/Apr/2026:10:23:01 +0000] remote_ip=192.168.1.42 request_method=POST url
 
 Include `traceId` at the end so HTTP-layer logs can be joined to application logs in Splunk with a single field.
 
-## Correlation IDs (MDC)
+## Trace correlation
 
-The frontend generates a `traceId` and sends it as `X-Trace-Id` on every request. The backend accepts it and propagates it through all downstream logs. If no header is present (service-to-service calls without FE instrumentation, health checks, etc.), the backend generates a UUID as fallback.
+### Default: OpenTelemetry Java agent
 
-**Filter (runs on every request):**
+Attach the Splunk Distribution of OpenTelemetry Java (or upstream `opentelemetry-javaagent.jar`) via the JVM flag. For environment-specific setup instructions see:
+
+- **Local dev + Docker:** `java-springboot` skill -- "OTEL agent setup" section
+- **AWS (EC2 / ECS):** `terraform` skill -- "Step 4a: OTEL agent on EC2" section
+
+```
+-javaagent:/opt/otel/opentelemetry-javaagent.jar
+```
+
+Set the minimum required env vars:
+
+```
+OTEL_SERVICE_NAME=my-service
+OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+OTEL_LOGS_EXPORTER=otlp
+```
+
+The agent injects `trace_id` and `span_id` into MDC on every request thread. Every `logger.info`, `logger.error`, etc. on that thread picks them up automatically -- no code changes required. Both fields appear in every JSON log line and correlate directly to spans in Splunk APM.
+
+**Async threads:** the agent propagates context automatically for `ExecutorService`, `CompletableFuture`, Spring `@Async`, and most common thread pools. If you use a custom executor, wrap it:
+
+```java
+ExecutorService executor = Context.taskWrapping(Executors.newFixedThreadPool(4));
+```
+
+The frontend still sends `X-Trace-Id` to correlate browser-side events. The OTEL agent picks this up automatically if `X-Trace-Id` is mapped to the W3C `traceparent` header. Otherwise echo it back in the response header for FE log joining -- the OTEL `trace_id` is the authoritative correlation field in Splunk.
+
+### Fallback: manual TraceIdFilter + MDC
+
+Use only when the OTEL agent cannot be attached (Lambda cold-start constraints, locked-down infra). This gives single-service log correlation only -- no distributed tracing across services.
 
 ```java
 public class TraceIdFilter implements Filter {
@@ -67,7 +97,7 @@ public class TraceIdFilter implements Filter {
 }
 ```
 
-Include `traceId` in the JSON appender pattern so it appears on every log line without manual effort.
+When using the fallback, `MDC.clear()` must always run in a `finally` block and async context propagation must be handled manually.
 
 ## Structured JSON format
 
@@ -77,14 +107,17 @@ Every application log line must be valid JSON with at least these fields:
 {
   "timestamp": "2026-04-20T10:23:01.456Z",
   "level": "INFO",
-  "traceId": "abc-123",
+  "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+  "span_id": "00f067aa0ba902b7",
   "logger": "com.example.order.OrderService",
   "message": "order_created orderId=ORD-9981 customerId=C-42 amount=149.99",
   "thread": "http-nio-8080-exec-3"
 }
 ```
 
-Use `logstash-logback-encoder` (Logback) or `log4j2-ecs-layout` (Log4j2) to emit JSON without manual formatting.
+`trace_id` and `span_id` are injected by the OTEL agent -- do not set them manually. Use `logstash-logback-encoder` (Logback) or `log4j2-ecs-layout` (Log4j2) to emit JSON; both pick up MDC fields automatically.
+
+When using the manual fallback, the field is `traceId` (camelCase, UUID format) -- note that this will not correlate to Splunk APM spans.
 
 ## Splunk / Datadog key-value pairs in message
 
@@ -104,7 +137,7 @@ Rules:
 
 | Level | When to use |
 |-------|-------------|
-| `ERROR` | Unhandled exceptions, system failures, data integrity violations. Always include the exception object. |
+| `ERROR` | Unhandled exceptions, system failures, data integrity violations. Always include the exception object AND the entity IDs / operation context needed to reproduce the failure (e.g. `orderId`, `userId`, the action being attempted). |
 | `WARN` | Recoverable issues, degraded behavior, retries, unexpected but non-fatal state. |
 | `INFO` | Business touchpoints (see layer guidance below). Default production level. |
 | `DEBUG` | Developer detail: SQL, serialized payloads, branch decisions. Off in production. |
@@ -142,9 +175,33 @@ Log query intent at `DEBUG`, never log result sets or row counts at `INFO` (volu
 
 ```java
 log.debug("db_query table=orders filter=customerId:{} limit={}", customerId, limit);
+// On failure -- include the entity context so the error is self-contained:
+log.error("db_query_failed table=orders customerId={} limit={}", customerId, limit, ex);
 ```
 
-Log `ERROR` on `DataAccessException` with the exception attached.
+The exception is always the last argument to SLF4J -- Logback writes the full stack trace automatically. Include the same key=value context as the DEBUG line so you can reconstruct what was being queried without needing the preceding log line.
+
+### Auth layer
+
+Log at the security filter / middleware boundary. Never log credentials, tokens, or passwords at any level.
+
+```java
+// Successful authentication -- DEBUG to avoid INFO noise in high-traffic APIs
+log.debug("auth_success userId={} method=jwt", userId);
+
+// Failed authentication (bad credentials, expired token, malformed header) -- WARN
+log.warn("auth_failed reason={} remoteIp={}", reason, remoteIp);
+// reason values: "token_expired", "token_invalid", "token_missing", "credentials_invalid"
+
+// Authorization denial (authenticated but not permitted) -- WARN
+log.warn("authz_denied userId={} resource={} action={}", userId, resource, action);
+```
+
+Rules:
+- `reason` must be a stable enum-like token, not a free-form message -- parsers and dashboards depend on it.
+- Never include the token, password, or credential value in any log line, even masked/truncated.
+- Log the remote IP on auth failures -- it is the primary signal for brute-force detection.
+- Auth failures are WARN, not ERROR. They are expected events (wrong password, expired session); ERROR is reserved for system failures in the auth layer (e.g. the token-signing key is unavailable).
 
 ### External service calls
 
@@ -162,7 +219,8 @@ Log `ERROR` on non-2xx responses or timeouts, with response status and body exce
 - **Never log PII.** No email addresses, names, passwords, tokens, card numbers, SSNs in any log at any level.
 - **Never log secrets.** No API keys, DB credentials, JWT payloads.
 - **Never log full request/response bodies** unless behind a `TRACE` guard and explicitly opt-in per endpoint.
-- `MDC.clear()` must always run in a `finally` block -- failure to clear leaks context across thread pool reuse.
+- When using the OTEL agent, do not manually call `MDC.put("trace_id", ...)` or `MDC.clear()` -- the agent owns MDC lifecycle. Interfering with it causes context corruption.
+- When using the manual fallback, `MDC.clear()` must always run in a `finally` block -- failure to clear leaks context across thread pool reuse.
 - Do not construct log strings with `+` concatenation. Use SLF4J parameterized logging (`{}`) to avoid string allocation when the level is disabled.
 
 ## When to apply
