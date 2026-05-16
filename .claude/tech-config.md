@@ -37,7 +37,7 @@ Design docs and plans live under `generated-docs/`. Production artifacts (code, 
 | FE Detailed Design | `generated-docs/architecture/fe-detailed-design.md` + `generated-docs/architecture/fe-detailed-design.html` | FE writes, EM approves | `senior-frontend-engineer.md` |
 | API Contract | `generated-docs/contracts/api-contract.md` + `generated-docs/contracts/api-contract.html` | BE + FE write, EM approves | `senior-backend-engineer.md`, `senior-frontend-engineer.md` |
 | Test Plan | `generated-docs/qa/test-plan.md` + `generated-docs/qa/test-plan.html` | QA writes, EM approves | `senior-qa-automation-engineer.md` |
-| ER Diagram | `src/db/er-diagram.md` | BE writes, EM verifies | `er-diagram-rule.md` |
+| ER Diagram | `src/db/er-diagram.md` | BE writes, EM verifies | `db-schema-change-rule.md` |
 | DB Schema Files | `src/db/schema/` | BE | `db-schema.md` |
 | DB Migrations | `src/db/migrations/` | BE | `db-schema.md` |
 | DB Seeds (all envs) | `src/db/seeds/common/` | BE | `db-schema.md` |

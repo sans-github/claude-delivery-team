@@ -331,7 +331,7 @@ Rules in `.claude/rules/` apply automatically to every session:
 - **progress-tracking-rule** -- `delivery-tracker.md` is the single source of truth for human gates and phase progress; agents check off steps and resume from it directly
 - **backlog-reporting-rule** -- append discovered bugs and tech debt to `BACKLOG.md` triage table
 - **contract-first-rule** -- governs agent-to-agent technical contracts (HLD, DB Schema, BE Detailed Design, FE Detailed Design, API Contract, Test Plan, Issues Lists); human milestone gates are tracked in `workflow/delivery-tracker.md`
-- **er-diagram-rule** -- maintain a current ER diagram at `src/db/er-diagram.md`; update it in the same commit as any schema change
+- **db-schema-change-rule** -- all schema changes require a versioned migration file and an updated ER diagram (`src/db/er-diagram.md`) in the same commit; no raw DDL outside migration files
 - **product-baseline-rule** -- maintain a consolidated master PRD and mocks at `projects/master/`; PM and Designer are blocked from starting a new feature until it is current
 
 ## Usage guide

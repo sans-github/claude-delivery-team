@@ -33,7 +33,7 @@ Run through every applicable item before declaring a schema change complete.
 
 ## ER diagram
 
-- [ ] `src/db/er-diagram.md` updated in the same commit as this schema change (required by `er-diagram-rule.md`)
+- [ ] `src/db/er-diagram.md` updated in the same commit as this schema change (required by `db-schema-change-rule.md`)
 
 ## Breaking changes
 
