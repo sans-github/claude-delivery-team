@@ -244,3 +244,20 @@ Do not hardcode `OTEL_EXPORTER_OTLP_ENDPOINT` in the image -- it differs between
     </executions>
 </plugin>
 ```
+
+### Static analysis
+
+Checkstyle with `google_checks.xml` is the only enforced linter. Stay within it; do not add rules beyond it.
+
+**Always fix before committing:**
+- Unused imports
+- Unused local variables
+- Unreachable code
+
+**Do not enforce (subjective, hurts readability):**
+- Cyclomatic complexity thresholds (forces artificial decomposition of readable code)
+- Method or class line length limits (context-dependent)
+- "Magic number" rules (inline literals like `401` or `3600` are often more readable than named constants)
+- Naming length rules
+
+The rule of thumb: if fixing the violation makes the code harder to read, the rule is not worth having.
