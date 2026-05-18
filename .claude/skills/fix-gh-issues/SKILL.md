@@ -75,7 +75,7 @@ After making changes, verify:
 
 Commit and push using `/my-git-commit-push`.
 
-Then close the issue with a comment explaining what changed and where:
+Then immediately close the issue -- no approval needed:
 
 ```bash
 gh issue close <N> --comment "Fixed in <sha>. [one sentence on what changed and in which file(s)]"
