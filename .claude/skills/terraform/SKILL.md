@@ -461,3 +461,62 @@ terraform apply            # make it so
 ```
 
 Never skip steps. Never apply without a reviewed plan. Include the `terraform plan` resource summary in the commit body for any resource-affecting change.
+
+---
+
+## Teardown Protocol
+
+Follow these steps in order every time teardown is requested. Do not stop after `terraform destroy`.
+
+### Step 1: Destroy Terraform-managed resources
+
+```bash
+terraform destroy -auto-approve
+```
+
+### Step 2: Delete external resources not tracked in Terraform state
+
+Resources commonly created alongside infra but not managed by Terraform (e.g. SSM Parameter Store entries, Secrets Manager secrets, manually created IAM policies or roles outside the module). Identify these from the deployment plan or project config and delete them explicitly using the cloud provider CLI.
+
+Example (AWS):
+```bash
+aws ssm delete-parameters --names "/myapp/db_password" "/myapp/api_key"
+aws secretsmanager delete-secret --secret-id myapp/jwt-secret --force-delete-without-recovery
+```
+
+### Step 3: Verify via cloud CLI (100% confirmation required)
+
+Do not trust the destroy output alone. Query the provider directly for each resource class that was provisioned. Only proceed to Step 4 after all queries confirm the resources are gone.
+
+Example (AWS):
+```bash
+# EC2
+aws ec2 describe-instances --filters "Name=tag:project,Values=<project>" --query 'Reservations[*].Instances[*].InstanceId'
+# Elastic IPs
+aws ec2 describe-addresses --filters "Name=tag:project,Values=<project>"
+# Security groups
+aws ec2 describe-security-groups --filters "Name=tag:project,Values=<project>"
+# Key pairs
+aws ec2 describe-key-pairs --key-names <name>
+# IAM
+aws iam get-role --role-name <name>
+# SSM parameters
+aws ssm get-parameters-by-path --path /<prefix>/
+# Terraform state must be empty
+terraform state list
+```
+
+Adapt the queries to the provider and resource classes actually used in the project. The principle is the same regardless of cloud: query independently, confirm empty results for each class.
+
+### Step 4: Delete local artifacts
+
+| Artifact | Path | Reason |
+|---|---|---|
+| SSH private key | `~/.ssh/<key-name>` | Host is gone; key has no valid target |
+| SSH public key | `~/.ssh/<key-name>.pub` | Same |
+| Terraform state | `src/infra/terraform.tfstate` | Stale after destroy |
+| Terraform state backup | `src/infra/terraform.tfstate.backup` | Same |
+| Terraform vars | `src/infra/terraform.tfvars` | May contain credentials; must not persist after environment is gone |
+| Provider cache | `src/infra/.terraform/` | No secrets; safe to keep or delete |
+
+Adjust paths to match the project's actual layout (resolved from `tech-config.md` File locations table).

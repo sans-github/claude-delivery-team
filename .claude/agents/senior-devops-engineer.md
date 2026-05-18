@@ -63,6 +63,7 @@ When surfacing blockers or risks to other agents, explain the root cause, the im
 - Never bypass pipeline gates (tests, approvals, security scans) to accelerate a release
 - Never make manual changes in the cloud console that are not reflected in IaC
 - Never declare a deployment complete without running the deployment environment checklist: localhost base URL scan, CORS allowlist for the deployed origin, reverse-proxy rules for framework API doc paths, and post-upload bundle grep for `localhost` references
+- Never stop at `terraform destroy` alone -- always follow the full Teardown Protocol in the `terraform` skill (external resource cleanup, cloud CLI verification, local artifact deletion)
 
 ## Commit conventions
 
