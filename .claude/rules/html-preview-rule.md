@@ -16,12 +16,38 @@ Every time an agent writes **or updates** any of the following artifacts, it mus
 
 The HTML file lives in the same folder as the MD, with the same base name (e.g. `prd.md` → `prd.html`).
 
+## Required document structure
+
+Every agent-produced artifact must follow this section order so reviewers can orient without scrolling:
+
+1. **Status header** (if applicable) -- `Status: Approved — [role]` and `Approved: YYYY-MM-DD`, as a blockquote at the very top of the MD
+2. **Key overview section** -- the single most decision-relevant summary, as the first `##` heading
+3. **Full content** -- remaining sections in logical order
+
+The table of contents is auto-generated from all `##` and `###` headings by pandoc. Do not write a manual TOC.
+
+### Key overview per artifact
+
+| Artifact | First `##` heading | Content |
+|---|---|---|
+| PRD | `## Goals` | Goals, non-goals, and success metrics |
+| System Architecture | `## System Overview` | Component summary table or diagram |
+| High-Level Design | `## Architecture Summary` | Architecture summary and key technical decisions |
+| BE Detailed Design | `## API Surface` | API endpoints at a glance: method, path, purpose |
+| FE Detailed Design | `## Component Overview` | Component tree at a glance |
+| API Contract | `## Contract Summary` | Endpoint count, auth model, key constraints |
+| Deployment Plan | `## What Will Be Provisioned` | Component list, service, config, and estimated cost table |
+| Infrastructure Verification | `## Verification Summary` | What was checked and pass/fail result per check |
+| Test Plan | `## Scope` | What is in scope, what is out, and risk summary |
+| Kickoff Plan | `## Summary` | Feature summary, delivery phases, and key risks |
+
 ## Pandoc command
 
 ```bash
-CSS='body{max-width:800px;margin:2rem auto;padding:0 1rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;color:#24292e}h1,h2,h3{border-bottom:1px solid #eaecef;padding-bottom:.3em;margin-top:1.5em}a{color:#0366d6}code{background:#f6f8fa;padding:.2em .4em;border-radius:3px;font-size:85%}pre{background:#f6f8fa;padding:16px;border-radius:6px;overflow:auto}pre code{background:none;padding:0}blockquote{padding:0 1em;color:#6a737d;border-left:.25em solid #dfe2e5;margin:0 0 16px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #dfe2e5;padding:6px 13px}tr:nth-child(2n){background:#f6f8fa}img{max-width:100%}'
+CSS='body{max-width:800px;margin:2rem auto;padding:0 1rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;color:#24292e}h1,h2,h3{border-bottom:1px solid #eaecef;padding-bottom:.3em;margin-top:1.5em}a{color:#0366d6}code{background:#f6f8fa;padding:.2em .4em;border-radius:3px;font-size:85%}pre{background:#f6f8fa;padding:16px;border-radius:6px;overflow:auto}pre code{background:none;padding:0}blockquote{padding:0 1em;color:#6a737d;border-left:.25em solid #dfe2e5;margin:0 0 16px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #dfe2e5;padding:6px 13px}tr:nth-child(2n){background:#f6f8fa}img{max-width:100%}#TOC{border:1px solid #eaecef;border-radius:6px;padding:1rem 1.5rem;margin-bottom:2rem;background:#f6f8fa}#TOC ul{margin:.25rem 0;padding-left:1.2em}#TOC>ul{padding-left:0;list-style:none}#TOC a{text-decoration:none;color:#0366d6}'
 
 pandoc "$MD_FILE" -f gfm -o "$HTML_FILE" --standalone \
+  --toc --toc-depth=2 \
   --metadata title="$(basename "$MD_FILE" .md)" \
   --variable "header-includes=<style>${CSS}</style>"
 ```
