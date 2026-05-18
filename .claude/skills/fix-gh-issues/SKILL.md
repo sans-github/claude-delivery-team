@@ -57,7 +57,11 @@ Report to the user in this format before making any change:
 > **Corrections to the issue:** [any factual errors in the issue's proposal]
 > **Proposed changes:** [bullet list of specific edits]
 >
-> Proceed?
+Then use `AskUserQuestion` (single-select) to ask for approval:
+
+- Question: "Proceed with Issue #N?"
+- Option 1: **Yes** -- implement the approved changes (list this first so the user can tab-select it)
+- Option 2: **No / needs changes** -- stop and wait for revised direction
 
 Wait for explicit user approval. Do not proceed on assumption or inference.
 
