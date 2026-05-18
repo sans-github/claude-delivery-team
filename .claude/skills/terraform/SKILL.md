@@ -148,6 +148,87 @@ graph TD
 
 ---
 
+## Bootstrap script conventions
+
+### Split installs by concern
+
+Never bundle unrelated packages onto a single install line. One failure must not abort unrelated installs:
+
+```bash
+dnf install -y java-21-amazon-corretto   # runtime
+dnf install -y mariadb105-server         # database
+dnf install -y nginx                     # web server
+```
+
+### Use known-good package names for the target OS
+
+Package names differ across distributions. Do not guess from memory -- use the reference below. If the target OS is not listed, state the assumption explicitly in the deployment plan and flag it as unverified.
+
+| Package | AL2023 | Ubuntu 22.04 |
+|---------|--------|--------------|
+| Java 21 | `java-21-amazon-corretto` | `openjdk-21-jdk` |
+| MySQL server | `mariadb105-server` | `mysql-server` |
+| MySQL client | `mariadb105` | `mysql-client` |
+| Nginx | `nginx` | `nginx` |
+| AWS CLI | pre-installed | `awscli` |
+| Node.js 20 | `nodejs20` (via `dnf module`) | `nodejs` (via NodeSource PPA) |
+
+Verify whether a package is pre-installed on the AMI before installing (e.g. `aws-cli` ships on AL2023 -- a redundant install is harmless but signals the agent did not check).
+
+---
+
+## Post-apply verification
+
+Terraform exit code 0 confirms resource creation, not that the bootstrap script succeeded or the instance is functional. After every `terraform apply`, the agent must SSH in and verify before marking any delivery tracker step complete.
+
+### Step 1: Check cloud-init
+
+```bash
+sudo grep -E "error|fail|Error|Fail" /var/log/cloud-init-output.log
+sudo tail -20 /var/log/cloud-init-output.log
+```
+
+Look for the final line: `Cloud-init ... finished` with no errors. If errors are present, read the surrounding context to identify which install or command failed.
+
+### Step 2: Verify each expected service is active
+
+```bash
+systemctl is-active <service>   # returns "active" or "failed"/"inactive"
+```
+
+Run this for every service the bootstrap script was supposed to start (e.g. `mysqld`/`mariadb`, `nginx`, the app service). A `failed` or `inactive` result means the step is not complete.
+
+### Step 3: Verify runtimes and directories
+
+```bash
+java -version
+node --version       # if applicable
+ls /opt/<app>/       # app directory exists
+systemctl cat <app>  # systemd unit is registered
+```
+
+### Step 4: Agentic recovery on failure
+
+If any verification check fails, attempt one autonomous recovery before escalating:
+
+- Missing package: install it directly via SSH (`sudo dnf install -y <package>`)
+- Service not started: check the journal (`sudo journalctl -u <service> -n 50`), fix the root cause, then `sudo systemctl start <service>`
+- Missing directory or unit: recreate it
+
+After one recovery attempt, re-run the relevant verification checks. If they pass, continue. If they still fail, stop immediately and notify the human:
+
+> Provisioning verification failed after one recovery attempt.
+> Failed check: [what was checked]
+> Recovery attempted: [what was done]
+> Current state: [what the logs/systemctl show]
+> Manual action needed: [specific next step for the human]
+
+### Step 5: Only then mark steps complete
+
+Do not check off any delivery tracker step, write `Status: Approved`, or advance the stage until all verification checks pass. Terraform exit 0 is a necessary condition, not a sufficient one.
+
+---
+
 ## Module structure
 
 Split resources into focused modules by concern. Each module uses the standard HashiCorp file layout:
