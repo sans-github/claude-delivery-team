@@ -64,6 +64,8 @@ Standalone domain skills live under `.claude/skills/{skill}/`, each with a `SKIL
 
 Skill names must be unique across all skill files.
 
+Contributor slash commands are also packaged as skills: `/feature-init` (scaffold a new feature), `/feature-init-dry-run` (dry run the full workflow), `/fix-gh-issues` (implement open GitHub issues), and `/create-new-agent` (add a new agent to this repo with full structural verification).
+
 ```mermaid
 mindmap
   root((Agents))
