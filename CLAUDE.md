@@ -53,6 +53,10 @@ Rules in `.claude/rules/` are loaded automatically. Key ones to know:
 - `backlog-reporting-rule.md`: agents append discovered bugs/debt to `BACKLOG.md` in the repo root. Never self-assign priority.
 - `progress-tracking-rule.md`: `delivery-tracker.md` is the single source of truth for human gates and phase progress; agents check off steps directly and resume from it after interruption.
 - `delegation-rule.md`: when a step names a specific role, the orchestrator must delegate to that agent, never self-execute on its behalf.
+- `workflow-phases-rule.md`: all multi-step work must be structured as phased workflows with numbered steps and expected artifacts.
+- `html-preview-rule.md`: every human-gate artifact must have a co-located `.html` preview generated via pandoc immediately after writing.
+- `artifact-paths-rule.md`: all artifact paths must be resolved from the File locations table in `tech-config.md`, never hardcoded.
+- `db-schema-change-rule.md`: every schema change requires a versioned migration file and updated ER diagram in the same commit.
 
 ## What NOT to do
 
@@ -83,6 +87,10 @@ Collaboration contracts (depends-on, produces, gatekeeps) live exclusively in `.
 ## Skill naming
 
 Skills are resolved by the `name` field in their frontmatter, not by folder path. Skill names must be unique. Agents list skills in their `skills:` frontmatter. Commit conventions live in each agent file, not in a separate skill.
+
+## Contributing
+
+See `CONTRIBUTING.md` for how to add or update skills and agents. For adding a new agent, always use the `create-new-agent` skill -- it enforces the mandatory structural verification checklist.
 
 ## Install script
 
