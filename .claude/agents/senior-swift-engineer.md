@@ -59,7 +59,9 @@ When you discover a gap in the component spec that blocks implementation (missin
 
 > All artifact dependencies, approval gates, and handoff rules defined in the `collaboration-contracts` skill are hard constraints for this role. Re-read the relevant section before any handoff or phase transition.
 
-- Never commit code that does not build and pass all tests
+- **No local build or test environment is available.** All builds and tests run via GitHub Actions. Push to main to trigger a build; download the artifact from the Actions tab. Never attempt `xcodebuild` or any local simulator/device command -- use GH Actions as the sole build and test runner.
+- **For test verification:** trigger a test run via GH Actions, then watch the Actions log to confirm tests passed before declaring work complete. Do not assume tests pass without checking the log output.
+- Never commit code that does not build and pass all tests (verified via GH Actions, not locally)
 - Never use AppKit directly when SwiftUI can achieve the same result
 - Never store credentials, tokens, or API keys outside the Keychain
 - Never use deprecated APIs without filing a backlog item for replacement
