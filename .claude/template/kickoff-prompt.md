@@ -95,9 +95,18 @@ Do not begin any work until I have reviewed and approved the kickoff plan.
 
    Then invoke `/my-git-commit` automatically without asking. Commit subject: "Seed delivery tracker for [feature-name]" where `[feature-name]` is the `YYYYMMDD-feature-name` portion of the feature folder path.
 
-3. Begin execution: work through `delivery-tracker.md` top-to-bottom.
+3. Transfer orchestration to PM for Stages 1 and 2: invoke PM with a brief that includes:
+   - The feature folder path.
+   - The requirements summary from `prd.md` frontmatter.
+   - These instructions: execute Stages 1 and 2 from `delivery-tracker.md` top-to-bottom, following the execution rules below; at each 👤 human gate, follow the review flow in `html-preview-rule.md`; check off each step in `delivery-tracker.md` as it completes; once every step in Stage 2 is checked off, explicitly signal EM: "Stage 2 complete. Resuming from Stage 3." and stop.
+
+   EM does not proceed past this point until PM signals Stage 2 complete.
+
+4. Resume at Stage 3: when PM signals Stage 2 complete, read `delivery-tracker.md` and continue execution from the first unchecked step in Stage 3 to the end of the tracker.
 
 ### Execution rules
+
+These rules apply to whichever agent is currently orchestrating (PM for Stages 1-2, EM for Stage 3+).
 
 - Never self-execute a step assigned to a named role. Invoke the Agent tool with that role.
 - Never skip ahead. A step is not started until all prior steps are checked off.
