@@ -148,17 +148,31 @@ Apply to `[feature-folder]/workflow/feature-setup.md`:
 
 Delete `[feature-folder]/workflow/user-phase-input.json` after applying.
 
-Print a plain-language summary:
+Print a plain-language summary with consistent alignment:
+
+1. Collect every label that will appear: stage names (e.g. `Stage 1: Discovery`) and checkpoint labels (e.g. `    👤 Review and approve the PRD`). The checkpoint prefix `    👤 ` counts toward the label width.
+2. Find `max_label_width` = the length of the longest label.
+3. For each line, pad the label to `max_label_width` with spaces, then append the status badge.
+4. Print a blank line after each stage block (after its last checkpoint row, or after the stage line itself if it has no checkpoints).
+
+Example with correct alignment (labels padded to a common column):
 
 ```
 Phases configured:
-- Stage 1: Discovery        [ active ]
-    👤 review and approve PRD          [ active ]
-- Stage 2: Design           [ skipped ]
-- Stage 3: Technical Planning  [ active ]
-    👤 review and approve system architecture  [ skipped ]
-    👤 review and approve high-level design    [ active ]
-...
+- Stage 1: Discovery                            [ active ]
+    👤 Review and approve the PRD               [ active ]
+
+- Stage 2: Design                               [ active ]
+    👤 Review and approve mocks                 [ active ]
+
+- Stage 3: Technical Planning                   [ active ]
+    👤 Review and approve system architecture   [ skipped ]
+    👤 Review and approve high-level design     [ skipped ]
+    👤 Review and approve implementation plan   [ skipped ]
+
+- Stage 4: Engineering                          [ active ]
+    👤 Review and approve deployment plan       [ skipped ]
+
 Deployment target: local
 ```
 
