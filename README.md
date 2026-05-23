@@ -350,7 +350,7 @@ Rules in `.claude/rules/` apply automatically to every session:
 
 ```bash
 bash install.sh          # sync latest
-bash install.sh v1.2.0   # pin a tag or branch
+bash install.sh v1.0.0   # pin a tag or branch
 ```
 
 This clones the upstream repo and overwrites everything under `.claude/` (agents, rules, skills, template, guide docs) except your `settings.json`. Commit the result to lock the version.

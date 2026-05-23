@@ -49,7 +49,7 @@ Copy agents, rules, skills, and templates into your project:
 
 ```bash
 bash install.sh          # pull from main
-bash install.sh v1.2.0   # pin a specific tag or branch
+bash install.sh v1.0.0   # pin a specific tag or branch
 ```
 
 This overwrites everything under `.claude/` except `settings.json`. Commit the result to lock the version.

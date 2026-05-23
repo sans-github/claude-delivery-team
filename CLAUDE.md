@@ -96,7 +96,7 @@ See `CONTRIBUTING.md` for how to add or update skills and agents. For adding a n
 
 ```bash
 bash install.sh          # pull from main
-bash install.sh v1.2.0   # pin a tag or branch
+bash install.sh v1.0.0   # pin a tag or branch
 ```
 
 Copies `.claude/agents/`, `.claude/rules/`, `.claude/skills/`, `.claude/template/`, `.claude/SETUP-GUIDE.md`, and `.claude/tech-config.md` into the consumer project. Also scaffolds `BACKLOG.md` in the consumer root if it doesn't exist. Consumers commit the result to lock the version.
