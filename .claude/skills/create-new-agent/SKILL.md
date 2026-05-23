@@ -18,7 +18,7 @@ Do not touch any file until the plan is approved.
 
 Invoke the **Plan agent** with the user's intent plus this context:
 
-> Design a plan for adding a new agent to this Claude Code agents repo. The plan must cover: (1) agent file format and section order per CLAUDE.md, (2) which existing skills to reference and which new skills to scaffold inline, (3) which files across the repo need updating (agents, rules, skills/collaboration-contracts, template, tech-config, SETUP-GUIDE, README), (4) the structural verification grep strategy per the CLAUDE.md checklist. The user's intent: [INTENT]
+> Design a plan for adding a new agent to this Claude Code delivery-team repo. The plan must cover: (1) agent file format and section order per CLAUDE.md, (2) which existing skills to reference and which new skills to scaffold inline, (3) which files across the repo need updating (agents, rules, skills/collaboration-contracts, template, tech-config, SETUP-GUIDE, README), (4) the structural verification grep strategy per the CLAUDE.md checklist. The user's intent: [INTENT]
 
 Present the plan to the user. Iterate with `re-invoke Plan agent with this feedback: [USER_FEEDBACK]` until the user approves.
 
