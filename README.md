@@ -60,19 +60,19 @@ journey
     title Your checkpoints in /feature-init
     section Kickoff
       💬 Share requirements: 5: You
-      🗺️ Approve kickoff plan: 5: You
+      ⭕ Approve kickoff plan: 5: You
     section Discovery
-      📋 Approve PRD: 5: You
+      ⭕ Approve PRD: 5: You
     section Design
-      🎨 Approve mocks: 5: You
+      ⭕ Approve mocks: 5: You
     section Planning
-      🏗️ Approve sys arch: 5: You
-      📐 Approve HLD: 5: You
+      ⭕ Approve sys arch: 5: You
+      ⭕ Approve HLD: 5: You
     section Implementation
       ⚙️ Agents build autonomously: 3: Agents
-      ☁️ Approve deployment plan: 5: You
+      ⭕ Approve deployment plan: 5: You
     section Validation
-      🚀 Sign off on release: 5: You
+      ⭕ Sign off on release: 5: You
 ```
 
 ---
