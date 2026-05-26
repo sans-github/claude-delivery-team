@@ -53,6 +53,14 @@ Commit the result to lock the version.
 
 Claude walks you through setup, gathers requirements, scaffolds the feature folder, and kicks off the full workflow. You approve at every major decision point. Nothing proceeds without you.
 
+Here is what to expect:
+
+| Kickoff | Discovery | Design | Planning | Implementation | Validation |
+|---|---|---|---|---|---|
+| Share requirements; 👤 approve kickoff plan | 👤 Approve PRD | 👤 Approve mocks | 👤 Approve sys arch, then HLD | Agents build; 👤 approve deployment plan if applicable | 👤 Sign off on release |
+
+The 👤 steps are human gates where Claude stops and waits for your approval before continuing.
+
 ---
 
 ## Not sure yet?
