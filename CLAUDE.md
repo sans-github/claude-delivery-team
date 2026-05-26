@@ -11,7 +11,7 @@ Consumers install this repo into their own project via `install.sh`. They do not
 ## How consumers use it
 
 1. Run `install.sh` to copy `.claude/agents/`, `.claude/rules/`, `.claude/skills/`, `.claude/template/`, `.claude/SETUP-GUIDE.md`, and `.claude/tech-config.md` into their project.
-2. Run `/feature-init` in Claude Code (handles everything: requirements gathering via PM agent, folder scaffolding, phase config via HTML overview, and kickoff). No manual file editing required.
+2. Run `/feature-init` in Claude Code (handles everything: requirements gathering via PM agent, folder scaffolding, phase config, and kickoff). No manual file editing required.
 
 ## Folder structure and the reasoning behind it
 
@@ -54,7 +54,7 @@ Rules in `.claude/rules/` are loaded automatically. Key ones to know:
 - `progress-tracking-rule.md`: `delivery-tracker.md` is the single source of truth for human gates and phase progress; agents check off steps directly and resume from it after interruption.
 - `delegation-rule.md`: when a step names a specific role, the orchestrator must delegate to that agent, never self-execute on its behalf.
 - `workflow-phases-rule.md`: all multi-step work must be structured as phased workflows with numbered steps and expected artifacts.
-- `html-preview-rule.md`: every human-gate artifact must have a co-located `.html` preview generated via pandoc immediately after writing.
+- `artifact-review-rule.md`: at every human-gate artifact, output the full MD content in the response and use `AskUserQuestion` with Approve / Request changes.
 - `artifact-paths-rule.md`: all artifact paths must be resolved from the File locations table in `tech-config.md`, never hardcoded.
 - `db-schema-change-rule.md`: every schema change requires a versioned migration file and updated ER diagram in the same commit.
 

@@ -98,7 +98,7 @@ Do not begin any work until I have reviewed and approved the kickoff plan.
 3. Transfer orchestration to PM for Stages 1 and 2: invoke PM with a brief that includes:
    - The feature folder path.
    - The requirements summary from `prd.md` frontmatter.
-   - These instructions: execute Stages 1 and 2 from `delivery-tracker.md` top-to-bottom, following the execution rules below; at each 👤 human gate, follow the review flow in `html-preview-rule.md`; check off each step in `delivery-tracker.md` as it completes; once every step in Stage 2 is checked off, explicitly signal EM: "Stage 2 complete. Resuming from Stage 3." and stop.
+   - These instructions: execute Stages 1 and 2 from `delivery-tracker.md` top-to-bottom, following the execution rules below; check off each step in `delivery-tracker.md` as it completes; once every step in Stage 2 is checked off, explicitly signal EM: "Stage 2 complete. Resuming from Stage 3." and stop.
 
    EM does not proceed past this point until PM signals Stage 2 complete.
 
@@ -113,5 +113,5 @@ These rules apply to whichever agent is currently orchestrating (PM for Stages 1
 - After checking off any step, scan its parent phase group (bold label line, e.g. `- [ ] **Backend Development**`). If every child step under that group is `[x]`, mark the parent `[x]` in the same edit. Do not defer or batch rollup. Stage headings (`### Stage N: ...`) have no checkbox and are never rolled up.
 - After completing any step marked 💾, create a git commit immediately before proceeding to the next step. Do not ask -- commit automatically. Commit subject: imperative mood, describe the artifact (`Add PRD for sample-feature`), no stage numbers or approval metadata.
 - When the orchestrator reaches the end of the list, stop and wait -- EM will add the next batch of steps.
-- When a 👤 human gate is reached, follow the review flow in `html-preview-rule.md`: use `AskUserQuestion` to offer opening the HTML preview in the browser, then ask for approval. Check the box only after human confirms.
+- When a 👤 human gate is reached, output the full artifact MD content in the response, then use `AskUserQuestion` with options **Approve** and **Request changes** per `artifact-review-rule.md`. Check the box only after human confirms.
 - After human confirms a gate, do not prompt for a commit. Any uncommitted changes (e.g. tracker checkboxes) will be picked up by the next 💾 auto-commit.

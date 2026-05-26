@@ -38,7 +38,7 @@ Every step must include a done condition so the orchestrator can verify completi
 4. [ ] **ARCH:** produce HLD → `generated-docs/architecture/hld.md` -- done when: EM approves
 ```
 
-The `→ link` on a checked step is the confirmed artifact link -- written by the agent that produced the artifact when it checks off, not at plan creation. For steps that produce multiple files, list them all: `→ [path/a.md](../path/a.md), [path/b.html](../path/b.html)`.
+The `→ link` on a checked step is the confirmed artifact link -- written by the agent that produced the artifact when it checks off, not at plan creation. For steps that produce multiple files, list them all: `→ [path/a.md](../path/a.md), [path/b.md](../path/b.md)`.
 
 Skipped steps (e.g. out of scope for current delivery phase) should be marked with a note rather than left blank:
 

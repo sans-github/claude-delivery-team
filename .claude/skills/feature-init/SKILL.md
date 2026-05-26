@@ -7,7 +7,7 @@ description: Scaffold a new feature folder under projects/. Creates projects/mas
 
 Scaffolds a new feature workspace and guides the user through requirements, config, and kickoff interactively. One command -- no manual file editing required.
 
-**Sequence:** Requirements Kickoff → Scaffold → HTML Phase Config → Kick off
+**Sequence:** Requirements Kickoff → Scaffold → Phase Config → Kick off
 
 ---
 
@@ -81,72 +81,42 @@ Then invoke `/my-git-commit` automatically without asking. Commit subject: `"Sca
 
 ---
 
-## Step 2: HTML Phase Config
+## Step 2: Phase Config
 
-### Generate the HTML
+Read `[feature-folder]/workflow/feature-setup.md` to extract all stages and their `👤` gate lines.
 
-Do NOT write HTML from scratch. Use the pre-built template at `.claude/skills/feature-init/feature-overview-template.html`.
+Identify skippable stages: all stages currently marked `[ ]` except Stages 6, 7, and 8 (those are locked and always active).
 
-Read `[feature-folder]/workflow/feature-setup.md` to extract stage data, then read the template and produce `[feature-folder]/workflow/feature-overview.html` by replacing three placeholders:
+**2a. Stage selection**
 
-**`{{FEATURE_NAME}}`** -- feature name as a human-readable title (e.g. `User Auth Flow`)
+Use `AskUserQuestion` (multi-select):
 
-**`{{PROJECT_SUMMARY}}`** -- 1-2 sentence summary from the requirements frontmatter in `prd.md`
+> "Which stages would you like to skip? Stages 6, 7, and 8 are always included."
 
-**`{{STAGES_JSON}}`** -- a JSON array describing every stage. Each element:
+Options: one per skippable stage, using its stage label (e.g. "Stage 1: Discovery"). If there are more than 4 skippable stages, split into two sequential questions covering the full list. If the user selects nothing, all stages remain active.
 
-```json
-{
-  "id": "Stage 1: Discovery",
-  "name": "Stage 1: Discovery",
-  "desc": "PM finalizes requirements with you before work begins.",
-  "active": true,
-  "locked": false,
-  "gates": [
-    { "id": "HUMAN: review and approve PRD", "label": "Review and approve the PRD", "active": true }
-  ]
-}
-```
-
-Rules for building `STAGES_JSON`:
-- `active`: `true` if the stage is `[ ]`, `false` if `[-]`
-- `locked`: `true` for Stages 6, 7, and 8 (never-skippable); `false` for all others
-- `gates`: one entry per `👤` line in the stage; `active` defaults to `true`; `label` is plain English (strip "HUMAN:", "review and approve" → "Review and approve ...")
-- Locked stages: set `locked: true` -- the template will automatically disable their gate checkboxes too
-
-### Present the HTML
+**2b. Deployment target**
 
 Use `AskUserQuestion` (single-select):
 
-> "Phase overview is ready. Want to open it in your browser to configure your project?"
+> "What is your deployment target?"
 
-Options:
-- **Open in browser** -- CC detects the OS and runs the appropriate command:
-  - macOS: `open [feature-folder]/workflow/feature-overview.html`
-  - Linux: `xdg-open [feature-folder]/workflow/feature-overview.html`
-  - Windows: `start [feature-folder]/workflow/feature-overview.html`
-- **Skip, use defaults** -- skip HTML; all stages remain active, deployment target stays `local`
+Options: **Local** / **AWS** / **Other** (user types custom value via Other).
 
-If "Open in browser": after running the open command, tell the user: "The overview is open. Toggle any stages you want to skip, fill in deployment target, then click Confirm. Come back here and say 'done' when finished."
+**2c. Gate-level config (conditional)**
 
-Wait for the user to return and say "done" (or similar).
+If any active stage has two or more `👤` checkpoint lines, use `AskUserQuestion` (multi-select) to ask which individual gates to skip:
 
-### Read and apply the result
+> "Are there any specific review gates you want to skip?"
 
-Read the clipboard using the appropriate command for the OS:
-- macOS: `pbpaste`
-- Linux: `xclip -selection clipboard -o` (fall back to `xsel --clipboard --output` if `xclip` is not installed)
-- Windows: `powershell -command Get-Clipboard`
+Options: one per `👤` checkpoint across all active stages, labelled in plain English (strip "HUMAN:", e.g. "Review and approve the PRD"). If every active stage has at most one gate, skip this question.
 
-Write the output to `[feature-folder]/workflow/user-phase-input.json`. Then read that file.
+**Apply the selections**
 
-Apply to `[feature-folder]/workflow/feature-setup.md`:
-- For each stage with `false` in `phases`: change its `[ ]` to `[-]` at the stage line
-- For each checkpoint with `false` in `checkpoints`: find the matching `👤` step line within that stage and change its `[ ]` to `[-]`
-- Replace the deployment target `local` default in the `## Deployment target` block with the user's choice
-- If `additional_context` is non-empty: replace the example block in `## Additional context` with the user's text
-
-Delete `[feature-folder]/workflow/user-phase-input.json` after applying.
+Update `[feature-folder]/workflow/feature-setup.md`:
+- For each skipped stage: change its `[ ]` to `[-]`
+- For each skipped gate: find the matching `👤` step line within its stage and change its `[ ]` to `[-]`
+- Replace the `local` default in the `## Deployment target` block with the user's choice
 
 Print a plain-language summary with consistent alignment:
 
@@ -178,7 +148,7 @@ Deployment target: local
 
 Use `[ active ]` for `[ ]` items and `[ skipped ]` for `[-]` items. Only show checkpoint rows for active stages.
 
-Then ask: "Does this look right before we continue?" with options "Yes, continue" and "No, reopen browser". If reopen, re-run the HTML flow from "Present the HTML" and repeat until the user confirms.
+Then ask: "Does this look right before we continue?" with options "Yes, continue" and "No, reconfigure". If reconfigure, repeat from 2a until the user confirms.
 
 ---
 

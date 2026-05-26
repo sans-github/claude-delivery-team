@@ -11,9 +11,7 @@ This is the single source of truth for artifact flows across the team. When a co
 
 When this skill is loaded, treat every contract in this file as a hard constraint. Before any handoff, approval, or phase transition, re-read the relevant section and verify your action is permitted. Do not rely on memory of a prior read.
 
-## HTML previews
-
-Every time an agent writes or updates a human-gate artifact (PRD, kickoff plan, sys-arch, HLD, BE/FE/Swift detailed design, API contract, test plan), it must immediately generate a co-located `.html` preview via pandoc. At each 👤 review gate, offer to open the HTML in the browser using `AskUserQuestion`. Full details in `html-preview-rule.md`.
+At every 👤 human gate, follow `artifact-review-rule.md`: output the full artifact MD in the response, then use `AskUserQuestion` with **Approve** and **Request changes**.
 
 ---
 
@@ -23,7 +21,7 @@ Every time an agent writes or updates a human-gate artifact (PRD, kickoff plan, 
 - Reqs -- gathered from User before authoring PRD
 
 **PM produces:**
-- `prd.md` + `prd.html` -- single document covering PRD, app flows, ACs, and risks; PM is gatekeeper; HTML generated via pandoc per `html-preview-rule.md`
+- `prd.md` -- single document covering PRD, app flows, ACs, and risks; PM is gatekeeper
 
 ---
 
@@ -68,7 +66,7 @@ BE and FE do not receive formal artifact handoffs from PM. EM is the kickoff poi
 - PRD, ACs -- to scope Sys Arch
 
 **Arch provides to EM:**
-- Sys Arch (`generated-docs/architecture/sys-arch.md` + `generated-docs/architecture/sys-arch.html`) -- EM drives the loop; Arch authors and has final say; in agent-to-agent handoffs pass only the `.md` file
+- Sys Arch (`generated-docs/architecture/sys-arch.md`) -- EM drives the loop; Arch authors and has final say
 
 **EM depends on:**
 - Sys Arch -- approved by Arch before authoring Eng Plans (HLD)
@@ -101,7 +99,7 @@ When the deployment target is not local, EM runs a sync loop with DevOps during 
 - PRD, Reqs, ACs -- forwarded from PM at kickoff; informs BE Detailed Design scope
 
 **BE provides to EM:**
-- BE Detailed Design (`generated-docs/architecture/be-detailed-design.md` + `generated-docs/architecture/be-detailed-design.html`) -- for approval; HTML generated via pandoc per `html-preview-rule.md`; in agent-to-agent handoffs pass only the `.md` file
+- BE Detailed Design (`generated-docs/architecture/be-detailed-design.md`) -- for approval
 - Issues List -- submitted for sign-off before GH Issues are created
 
 **EM gatekeeps:**
@@ -124,7 +122,7 @@ When the deployment target is not local, EM runs a sync loop with DevOps during 
 - Mocks -- forwarded from Designer at kickoff; required before component implementation
 
 **FE provides to EM:**
-- FE Detailed Design (`generated-docs/architecture/fe-detailed-design.md` + `generated-docs/architecture/fe-detailed-design.html`) -- for approval; HTML generated via pandoc per `html-preview-rule.md`; in agent-to-agent handoffs pass only the `.md` file
+- FE Detailed Design (`generated-docs/architecture/fe-detailed-design.md`) -- for approval
 - Issues List -- submitted for sign-off before GH Issues are created
 
 **EM gatekeeps:**
@@ -144,7 +142,7 @@ When the deployment target is not local, EM runs a sync loop with DevOps during 
 ## BE <> FE
 
 **Joint output:**
-- API Contract (`generated-docs/contracts/api-contract.md` + `generated-docs/contracts/api-contract.html`) -- authored jointly by BE and FE, aligned on their Detailed Designs; submitted to EM for approval; HTML generated via pandoc per `html-preview-rule.md`; in agent-to-agent handoffs pass only the `.md` file
+- API Contract (`generated-docs/contracts/api-contract.md`) -- authored jointly by BE and FE, aligned on their Detailed Designs; submitted to EM for approval
 
 **EM gatekeeps:**
 - API Contract -- must be approved before BE endpoint implementation and FE integration begin
@@ -161,7 +159,7 @@ When the deployment target is not local, EM runs a sync loop with DevOps during 
 - BE + FE + Swift Detailed Designs -- forwarded by EM once approved; input to detailed QA planning
 
 **QA provides to EM:**
-- Test Plan (`generated-docs/qa/test-plan.md` + `generated-docs/qa/test-plan.html`) -- for approval before Issues List authoring; HTML generated via pandoc per `html-preview-rule.md`; in agent-to-agent handoffs pass only the `.md` file
+- Test Plan (`generated-docs/qa/test-plan.md`) -- for approval before Issues List authoring
 - Issues List -- submitted for sign-off before GH Issues are created
 - Automation suite -- for approval before delivery
 
@@ -323,7 +321,7 @@ If a clarification conversation reveals a gap, missing requirement, or needed de
 - Mocks + component spec -- forwarded from macOS Designer at kickoff; required before view implementation
 
 **Swift Engineer provides to EM:**
-- Detailed Design (`generated-docs/architecture/swift-detailed-design.md` + `generated-docs/architecture/swift-detailed-design.html`) -- for approval; HTML generated via pandoc per `html-preview-rule.md`; in agent-to-agent handoffs pass only the `.md` file
+- Detailed Design (`generated-docs/architecture/swift-detailed-design.md`) -- for approval
 - Issues List -- submitted for sign-off before GH Issues are created
 
 **EM gatekeeps:**
@@ -362,5 +360,5 @@ When Swift Engineer identifies a control or behavior that cannot be implemented 
 ## EM produces (standalone)
 
 - Plan with Human Gates (`workflow/delivery-tracker.md`) -- progressively filled by EM; seeded at kickoff with initial steps up to PM→EM handoff; after handoff, EM adds arch steps (if needed), HLD, and then the detailed implementation plan (full phase-by-phase breakdown with numbered steps, responsible agents, artifacts, loop exit conditions, and human checkpoints); always add a 👤 human gate after the implementation plan before execution begins; the orchestrator works through it top-to-bottom and stops when it reaches the end, waiting for EM to add the next batch
-- Kickoff Plan (`workflow/kickoff-plan.md` + `workflow/kickoff-plan.html`) -- HTML generated via pandoc per `html-preview-rule.md`; orchestrator is author
-- Eng Plans (HLD) (`generated-docs/architecture/hld.md` + `generated-docs/architecture/hld.html`) -- HTML generated via pandoc per `html-preview-rule.md`; in agent-to-agent handoffs pass only the `.md` file; EM is gatekeeper
+- Kickoff Plan (`workflow/kickoff-plan.md`) -- orchestrator is author
+- Eng Plans (HLD) (`generated-docs/architecture/hld.md`) -- EM is gatekeeper

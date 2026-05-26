@@ -114,7 +114,7 @@ Open `.claude/skills/collaboration-contracts/SKILL.md`. Add one section per new 
 - Approval gate and who approves
 - Any loop exit condition
 
-Also update the **HTML preview reminder**, **QA inputs**, **Arch gatekeeping**, and **Clarification access** sections if the new role participates in them. Use the existing Swift Engineer additions as a reference.
+Also update the **QA inputs**, **Arch gatekeeping**, and **Clarification access** sections if the new role participates in them. Use the existing Swift Engineer additions as a reference.
 
 ## Phase 5: Update all dependent files
 
@@ -127,7 +127,7 @@ Work through this list in order. For each file, check whether the new role or sk
 | `.claude/agents/senior-qa-automation-engineer.md` | Add "With \<Role\>" QA loop bullet if QA tests this role's output |
 | `.claude/agents/senior-software-architect.md` | Add "With \<Role\>" if Arch reviews this role's designs; update Ownership if needed |
 | `.claude/rules/contract-first-rule.md` | Add rows for any new artifact dependencies this role introduces |
-| `.claude/rules/html-preview-rule.md` | Add any new human-gate artifact to the artifact list and key overview table |
+| `.claude/rules/artifact-review-rule.md` | Add any new human-gate artifact to the artifact list and key overview table |
 | `.claude/rules/delegation-rule.md` | Add the new role name to the example role list |
 | `.claude/rules/backlog-reporting-rule.md` | Add the role's Area label (e.g. `Swift`) if not already present |
 | `.claude/tech-config.md` | Add tech stack row; add any new artifact to File locations table; update Mocks row if relevant |

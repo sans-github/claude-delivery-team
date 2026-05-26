@@ -1,6 +1,6 @@
 ---
 purpose: >
-  Filled in by /feature-init (Step 2: HTML phase config) before any agent begins work.
+  Filled in by /feature-init before any agent begins work.
   Configures which phases to include or skip and any deviations from the default collaboration pattern.
   Agents must read this before doing anything and use it to seed delivery-tracker.md.
 ---

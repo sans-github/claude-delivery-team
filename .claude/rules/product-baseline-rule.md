@@ -1,6 +1,6 @@
 # Rule: Master PRD and Mocks
 
-A consolidated, up-to-date copy of the full product PRD and HTML mocks must be maintained at `projects/master/`. This is the baseline every new feature starts from.
+A consolidated, up-to-date copy of the full product PRD and mocks must be maintained at `projects/master/`. This is the baseline every new feature starts from.
 
 ## Structure
 
@@ -9,7 +9,7 @@ projects/
 └── master/
     ├── product-specs/
     │   └── prd.md   # full product PRD, merged across all shipped features
-    └── mocks/       # current HTML mocks reflecting the live product UI
+    └── mocks/       # current UI mocks reflecting the live product
 ```
 
 ## When to update

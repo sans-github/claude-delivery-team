@@ -22,7 +22,7 @@ These are available technology choices per layer, not a mandatory full stack. Ea
 
 ## File locations
 
-Design docs and plans live under `generated-docs/`. Production artifacts (code, migrations, seeds) live under `src/`. Agent-to-agent handoffs always pass the `.md` file only. The `.html` file is for stakeholder and human review.
+Design docs and plans live under `generated-docs/`. Production artifacts (code, migrations, seeds) live under `src/`. Agent-to-agent handoffs always pass the `.md` file only.
 
 | Artifact | Path | Owner | Source |
 |---|---|---|---|
@@ -30,16 +30,16 @@ Design docs and plans live under `generated-docs/`. Production artifacts (code, 
 | Mocks | `generated-docs/design/` | Designer writes, PM approves | `senior-ux-ui-designer.md`, `senior-macos-designer.md` |
 | Feature Setup | `workflow/feature-setup.md` | Filled in by `/feature-init` (phase config, deployment target, context) | `feature-init` skill |
 | Kickoff Plan | `workflow/kickoff-plan.md` | Orchestrator writes, human approves | `kickoff-prompt.md` |
-| Implementation Plan | `workflow/implementation-plan.md` + `workflow/implementation-plan.html` | EM writes, human approves; steps then seeded into delivery-tracker.md | `senior-engineering-manager.md` |
-| System Architecture | `generated-docs/architecture/sys-arch.md` + `generated-docs/architecture/sys-arch.html` | Arch writes, EM approves | `senior-software-architect.md` |
-| Deployment Plan | `generated-docs/architecture/deployment-plan.md` + `generated-docs/architecture/deployment-plan.html` | DevOps writes, Human approves | `senior-devops-engineer.md` |
-| Infrastructure Verification | `generated-docs/ops/infra-verification.md` + `generated-docs/ops/infra-verification.html` | DevOps writes after smoke tests pass, Human approves | `senior-devops-engineer.md` |
-| Eng Plans (HLD) | `generated-docs/architecture/hld.md` + `generated-docs/architecture/hld.html` | EM writes, EM approves | `senior-engineering-manager.md` |
-| BE Detailed Design | `generated-docs/architecture/be-detailed-design.md` + `generated-docs/architecture/be-detailed-design.html` | BE writes, EM approves | `senior-backend-engineer.md` |
-| FE Detailed Design | `generated-docs/architecture/fe-detailed-design.md` + `generated-docs/architecture/fe-detailed-design.html` | FE writes, EM approves | `senior-frontend-engineer.md` |
-| Swift Detailed Design | `generated-docs/architecture/swift-detailed-design.md` + `generated-docs/architecture/swift-detailed-design.html` | Swift Engineer writes, EM approves | `senior-swift-engineer.md` |
-| API Contract | `generated-docs/contracts/api-contract.md` + `generated-docs/contracts/api-contract.html` | BE + FE write, EM approves | `senior-backend-engineer.md`, `senior-frontend-engineer.md` |
-| Test Plan | `generated-docs/qa/test-plan.md` + `generated-docs/qa/test-plan.html` | QA writes, EM approves | `senior-qa-automation-engineer.md` |
+| Implementation Plan | `workflow/implementation-plan.md` | EM writes, human approves; steps then seeded into delivery-tracker.md | `senior-engineering-manager.md` |
+| System Architecture | `generated-docs/architecture/sys-arch.md` | Arch writes, EM approves | `senior-software-architect.md` |
+| Deployment Plan | `generated-docs/architecture/deployment-plan.md` | DevOps writes, Human approves | `senior-devops-engineer.md` |
+| Infrastructure Verification | `generated-docs/ops/infra-verification.md` | DevOps writes after smoke tests pass, Human approves | `senior-devops-engineer.md` |
+| Eng Plans (HLD) | `generated-docs/architecture/hld.md` | EM writes, EM approves | `senior-engineering-manager.md` |
+| BE Detailed Design | `generated-docs/architecture/be-detailed-design.md` | BE writes, EM approves | `senior-backend-engineer.md` |
+| FE Detailed Design | `generated-docs/architecture/fe-detailed-design.md` | FE writes, EM approves | `senior-frontend-engineer.md` |
+| Swift Detailed Design | `generated-docs/architecture/swift-detailed-design.md` | Swift Engineer writes, EM approves | `senior-swift-engineer.md` |
+| API Contract | `generated-docs/contracts/api-contract.md` | BE + FE write, EM approves | `senior-backend-engineer.md`, `senior-frontend-engineer.md` |
+| Test Plan | `generated-docs/qa/test-plan.md` | QA writes, EM approves | `senior-qa-automation-engineer.md` |
 | ER Diagram | `src/db/er-diagram.md` | BE writes, EM verifies | `db-schema-change-rule.md` |
 | DB Schema Files | `src/db/schema/` | BE | `db-schema.md` |
 | DB Migrations | `src/db/migrations/` | BE | `db-schema.md` |

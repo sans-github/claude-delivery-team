@@ -7,7 +7,7 @@ description: Terraform IaC conventions covering module structure, parameterizati
 
 ## Deployment Planning
 
-Before writing any Terraform, produce a deployment plan at `generated-docs/architecture/deployment-plan.md` (+ HTML via pandoc per `html-preview-rule.md`). This is a human gate -- no Terraform code until the human approves.
+Before writing any Terraform, produce a deployment plan at `generated-docs/architecture/deployment-plan.md`. This is a human gate -- no Terraform code until the human approves.
 
 ### Document structure
 
@@ -240,7 +240,7 @@ After one recovery attempt, re-run the relevant verification checks. If they pas
 
 ### Step 5: Generate the infra verification artifact and open it for human review
 
-Once all verification checks pass, generate `generated-docs/ops/infra-verification.md` and its HTML preview (pandoc, per `html-preview-rule.md`), then open the HTML in the browser and wait for explicit human approval before advancing the stage.
+Once all verification checks pass, generate `generated-docs/ops/infra-verification.md`, then wait for explicit human approval before advancing the stage.
 
 #### Required sections
 
@@ -283,8 +283,7 @@ Document any automated check that failed and was recovered, or any component int
 
 #### Gate behavior
 
-1. Open the HTML file: `open generated-docs/ops/infra-verification.html` (macOS) or `xdg-open` (Linux).
-2. Use `AskUserQuestion` to present the artifact and ask for approval (options: **Approve** / **Request changes**).
+1. Output the full content of `infra-verification.md` in the response, then use `AskUserQuestion` to ask for approval (options: **Approve** / **Request changes**).
 3. On approval: write `Status: Approved — Human` and `Approved: YYYY-MM-DD` at the top of `infra-verification.md`.
 4. Only then check off the provisioning stage in the delivery tracker.
 
