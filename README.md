@@ -55,11 +55,58 @@ Claude walks you through setup, gathers requirements, scaffolds the feature fold
 
 Here is what to expect:
 
-| Kickoff | Discovery | Design | Planning | Implementation | Validation |
-|---|---|---|---|---|---|
-| Share requirements; 👤 approve kickoff plan | 👤 Approve PRD | 👤 Approve mocks | 👤 Approve sys arch, then HLD | Agents build; 👤 approve deployment plan if applicable | 👤 Sign off on release |
+<!-- OPTION A: Mermaid flowchart -->
+```mermaid
+flowchart LR
+    A(["👤 You\nshare requirements"])
+    --> B["PM writes PRD"]
+    --> C(["👤 You\napprove PRD"])
+    --> D["Designer produces mocks"]
+    --> E(["👤 You\napprove mocks"])
+    --> F["Arch + EM design system"]
+    --> G(["👤 You\napprove sys arch + HLD"])
+    --> H["Agents build"]
+    --> I(["👤 You\nsign off on release"])
 
-The 👤 steps are human gates where Claude stops and waits for your approval before continuing.
+    style A fill:#dbeafe
+    style C fill:#dbeafe
+    style E fill:#dbeafe
+    style G fill:#dbeafe
+    style I fill:#dbeafe
+```
+
+<!-- OPTION B: Numbered steps -->
+1. PM interviews you and writes the PRD
+2. 👤 **You approve the PRD**
+3. Designer produces mocks
+4. 👤 **You approve the mocks**
+5. Arch + EM design the system architecture and HLD
+6. 👤 **You approve sys arch + HLD**
+7. Agents build autonomously (BE, FE, QA)
+8. 👤 **You approve the deployment plan** *(non-local only)*
+9. QA validates
+10. 👤 **You sign off on release**
+
+<!-- OPTION C: Mermaid journey diagram -->
+```mermaid
+journey
+    title Your checkpoints in /feature-init
+    section Kickoff
+      Share requirements: 5: You
+      Approve kickoff plan: 5: You
+    section Discovery
+      Approve PRD: 5: You
+    section Design
+      Approve mocks: 5: You
+    section Planning
+      Approve sys arch: 5: You
+      Approve HLD: 5: You
+    section Implementation
+      Agents build autonomously: 3: Agents
+      Approve deployment plan: 5: You
+    section Validation
+      Sign off on release: 5: You
+```
 
 ---
 
