@@ -17,6 +17,19 @@ echo "Syncing agents from $REPO@$REF..."
 
 git clone --depth=1 --branch "$REF" "$REPO" "$TMP" -q
 
+if [ -d "$ROOT/.claude" ]; then
+  echo "WARNING: $ROOT/.claude already exists and will be overwritten."
+  printf "Continue? [y/N] "
+  read -r answer
+  if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
+    echo "Aborted."
+    rm -rf "$TMP"
+    exit 1
+  fi
+else
+  mkdir -p "$ROOT/.claude"
+fi
+
 for item in agents rules skills template SETUP-GUIDE.md tech-config.md; do
   src="$TMP/.claude/$item"
   dst="$ROOT/.claude/$item"
