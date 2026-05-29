@@ -31,8 +31,16 @@ A full team of senior-level agents that collaborate the way a real team does:
 
 **1. Install**
 
+From your project root:
+
 ```bash
-bash install.sh
+bash <(curl -fsSL https://raw.githubusercontent.com/sans-github/claude-delivery-team/main/install.sh)
+```
+
+To pin a specific version:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/sans-github/claude-delivery-team/main/install.sh) v1.0.0
 ```
 
 This does the following:

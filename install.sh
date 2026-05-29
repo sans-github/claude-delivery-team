@@ -3,7 +3,14 @@ set -euo pipefail
 
 REPO="https://github.com/sans-github/claude-delivery-team"
 REF="${1:-main}"
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# bash <(curl ...) sets BASH_SOURCE[0] to /dev/fd/N — not a real path.
+# curl | bash leaves it empty. Both cases fall back to pwd (consumer's project root).
+_src="${BASH_SOURCE[0]:-}"
+if [[ -f "$_src" && "$_src" != /dev/* && "$_src" != /proc/* ]]; then
+  ROOT="$(cd "$(dirname "$_src")/.." && pwd)"
+else
+  ROOT="$(pwd)"
+fi
 TMP=$(mktemp -d)
 
 echo "Syncing agents from $REPO@$REF..."
