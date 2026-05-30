@@ -31,7 +31,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/sans-github/claude-delivery-
 To pin a specific version:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/sans-github/claude-delivery-team/main/install.sh) v1.0.0
+bash <(curl -fsSL https://raw.githubusercontent.com/sans-github/claude-delivery-team/main/install.sh) v1.1.0
 ```
 
 This does the following:
