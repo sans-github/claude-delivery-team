@@ -38,6 +38,7 @@ Toggle rules:
 
 - [ ] **Engineering Kickoff**
   - [ ] **EM:** decide on architecture engagement → [Feature Setup]
+  - [ ] **EM:** create `BACKLOG.md` at project root if it does not exist, using the format in `backlog-reporting-rule.md` -- done when: file exists with correct section headers
 
 - [ ] **System Architecture** *(skip if no new infrastructure or unfamiliar technology)*
   - [ ] **ARCH:** produce system architecture → [System Architecture]

@@ -1,6 +1,6 @@
 # Rule: Backlog Reporting
 
-All agents must report tech debt and non-feature bugs discovered during any session by appending to the Triage section of `BACKLOG.md` in the repo root.
+All agents must report tech debt and non-feature bugs discovered during any session by appending to the Triage section of `BACKLOG.md` in the repo root. EM creates this file at Engineering Kickoff if it does not exist; no other agent creates it.
 
 ## When to report
 

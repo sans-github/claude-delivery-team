@@ -38,7 +38,6 @@ This does the following:
 
 - Copies agents, rules, skills, and templates into `.claude/`
 - Copies this README into `.claude/agents-guide.md`
-- Scaffolds `BACKLOG.md` in your project root (if it doesn't exist)
 - Creates or updates `CLAUDE.md` with `@.claude/tech-config.md` so agents can resolve artifact paths
 
 Commit the result to lock the version.
