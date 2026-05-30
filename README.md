@@ -38,7 +38,7 @@ This does the following:
 
 - Copies agents, rules, skills, and templates into `.claude/`
 - Copies this README into `.claude/agents-guide.md`
-- Creates or updates `CLAUDE.md` with `@.claude/tech-config.md` so agents can resolve artifact paths
+- Creates or updates `CLAUDE.md` with `@.claude/tech-config.md` — this import is what makes Claude Code load your stack config automatically. Every agent resolves artifact paths, naming conventions, and tooling choices from it. Without it, agents cannot locate where to write anything.
 
 Commit the result to lock the version.
 
