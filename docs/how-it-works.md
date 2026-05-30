@@ -22,6 +22,7 @@ You
                    ├─► BE        detailed design + implementation (gated on HLD)
                    ├─► FE        detailed design + implementation (gated on HLD)
                    ├─► BE + FE   jointly author the API contract (gated on both designs)
+                   ├─► DevOps    deployment plan + infrastructure (gated on HLD; skipped for local targets)
                    └─► QA        test plan → automation (gated on BE + FE artifacts)
 ```
 
@@ -89,6 +90,7 @@ Rules in `.claude/rules/` are loaded by Claude Code for every session. You do no
 | `artifact-review` | At every human-gate artifact, the agent outputs the full markdown content and uses `AskUserQuestion` with Approve / Request changes before proceeding |
 | `artifact-paths` | All artifact paths must be resolved from the File locations table in `tech-config.md`; never hardcoded |
 | `db-schema-change` | Every schema change requires a versioned migration file and an updated ER diagram in the same commit |
+| `gitignore` | Every agent that produces files in `src/` ensures `.gitignore` covers those file types in the same commit; first agent creates the file, all others append only |
 | `product-baseline` | `projects/master/` must reflect the current shipped product before any new feature starts |
 | `backlog-reporting` | All agents append discovered bugs and tech debt to `BACKLOG.md` triage; they never self-assign priority |
 
@@ -116,6 +118,20 @@ projects/
         └── delivery-tracker.md  live execution log
 src/                  all production artifacts: source code, DB, migrations, IaC
 ```
+
+---
+
+## Post-delivery
+
+After QA automation is approved, three mandatory stages run before any new feature can begin. None are skippable.
+
+| Stage | Who | What |
+|-------|-----|------|
+| 6: Master Baseline Update | PM, Designer | PM merges the feature PRD into `projects/master/product-specs/prd.md`. Designer merges mocks into `projects/master/mocks/`. Human confirms master is current. |
+| 7: Documentation | EM | EM generates `scripts/dev.sh` from the actual `src/` structure, then runs `/document-release` to update `README.md` and `CLAUDE.md`. Human approves. |
+| 8: Release Sign-off | EM, Human | EM verifies all artifacts are complete and approved. Human approves release readiness. |
+
+PM and Designer must not begin a new feature until Stage 6 is complete. `projects/master/` is always the baseline for the next feature, never a feature-specific folder.
 
 ---
 
@@ -148,7 +164,8 @@ src/                  all production artifacts: source code, DB, migrations, IaC
 12. **EM** approves each Issues List. Each role then creates GH Issues and begins implementation.
 13. **BE** implements BE Artifacts per BE Detailed Design and API Contract. **FE** implements FE Artifacts per FE Detailed Design and API Contract.
 14. **BE** and **FE** each produce Test Docs for QA to use in automation.
-15. **QA** authors the automation suite against FE/BE artifacts and test docs. EM approves before delivery.
+15. **DevOps** produces the Deployment Plan. Human approves. DevOps then provisions infrastructure. QA and DevOps run smoke checks against the live server until all pass. EM approves infrastructure. *(Skipped when deployment target is local.)*
+16. **QA** authors the automation suite against FE/BE artifacts and test docs. EM approves before delivery.
 
 ---
 
