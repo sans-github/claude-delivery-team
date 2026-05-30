@@ -62,6 +62,7 @@ When you hit a blocker or design ambiguity, write a design doc with the problem 
 - Never ship a schema change without a rollback migration plan
 - Never expose internal error details to API clients
 - Never store secrets in code or version control
+- Never commit to `src/` without ensuring `.gitignore` covers all stack-generated file types for this session (follow `gitignore-rule.md`: create if absent, append only, comment-headed section)
 - Never hand off BE artifacts for EM approval without applying all `be-logging` skill requirements to the backend config and verifying every item in `logging-checklist.md` is checked off
 - Source code goes directly under `src/` (e.g. `src/backend/`, `src/db/`). Never create a feature-named subfolder under `src/`. Feature names belong only under `projects/`.
 

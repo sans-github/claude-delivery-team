@@ -83,7 +83,7 @@ Toggle rules:
   - [ ] **BE:** implement API endpoints → `src/`
   - [ ] **BE:** implement logging -- done when: `be-logging` checklist fully checked off (structured JSON appender, TraceIdFilter, MDC correlation, access log, layer coverage)
   - [ ] **BE:** write unit and integration tests
-  - [ ] 💾 **EM:** review and approve BE implementation -- done when: logging checklist verified; openapi.json exported and committed (Spring Boot only); Status: Approved — EM set in artifact
+  - [ ] 💾 **EM:** review and approve BE implementation -- done when: logging checklist verified; openapi.json exported and committed (Spring Boot only); `.gitignore` covers all BE stack file types (per `gitignore-rule.md`); Status: Approved — EM set in artifact
   - [ ] **EM:** approve BE artifacts + test docs -- done when: Status: Approved noted; unblocks QA automation against BE
 
 - [ ] **FE Issues List**
@@ -94,7 +94,7 @@ Toggle rules:
   - [ ] **FE:** integrate with API
   - [ ] **FE:** implement logging -- done when: `fe-logging` checklist fully checked off (logger module, sessionId, traceId propagation from response headers, API call coverage, error boundary logging)
   - [ ] **FE:** write component and end-to-end tests
-  - [ ] 💾 **EM:** review and approve FE implementation -- done when: logging checklist verified; Status: Approved — EM set in artifact
+  - [ ] 💾 **EM:** review and approve FE implementation -- done when: logging checklist verified; `.gitignore` covers all FE stack file types (per `gitignore-rule.md`); Status: Approved — EM set in artifact
   - [ ] **EM:** approve FE artifacts + test docs -- done when: Status: Approved noted; unblocks QA automation against FE
 
 - [ ] **Swift Engineer Issues List** *(skip if no macOS app)*
@@ -104,7 +104,7 @@ Toggle rules:
   - [ ] **SWIFT ENGINEER:** implement SwiftUI views per approved mocks and component spec → `src/`
   - [ ] **SWIFT ENGINEER:** implement data layer (SwiftData / Core Data / networking) → `src/`
   - [ ] **SWIFT ENGINEER:** write unit tests and XCUITests -- done when: `swift-testing` checklist fully checked off
-  - [ ] 💾 **EM:** review and approve Swift Engineer implementation -- done when: Status: Approved — EM set in artifact
+  - [ ] 💾 **EM:** review and approve Swift Engineer implementation -- done when: `.gitignore` covers all Xcode/Swift file types (per `gitignore-rule.md`); Status: Approved — EM set in artifact
   - [ ] **EM:** approve Swift Engineer artifacts + test docs -- done when: Status: Approved noted; unblocks QA automation against Swift Engineer output
 
 - [ ] **Infrastructure** *(skip if no new infrastructure)*
@@ -116,7 +116,7 @@ Toggle rules:
     - [ ] **QA:** run API-level and E2E smoke checks against live server
     - If any check fails: QA reports failing test case and error details to DevOps → DevOps remediates → QA re-runs; loop repeats until all pass
     - Done when: all smoke checks exit 0
-  - [ ] 💾 **EM:** review and approve infrastructure
+  - [ ] 💾 **EM:** review and approve infrastructure -- done when: `.gitignore` covers all Terraform file types (per `gitignore-rule.md`); Status: Approved — EM set in artifact
 
 ---
 

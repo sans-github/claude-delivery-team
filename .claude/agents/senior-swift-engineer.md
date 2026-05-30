@@ -70,6 +70,7 @@ When you discover a gap in the component spec that blocks implementation (missin
 - Never merge without unit test coverage on all ViewModel and service business logic
 - Never add an entitlement without confirming the feature actually requires it
 - Source code goes directly under `src/` (e.g. `src/macos/`). Never create feature-named subfolders under `src/`. Feature names belong only under `projects/`.
+- Never commit to `src/` without ensuring `.gitignore` covers all Xcode/Swift file types (follow `gitignore-rule.md`: create if absent, append only, comment-headed section)
 
 ## Commit conventions
 

@@ -57,6 +57,7 @@ Rules in `.claude/rules/` are loaded automatically. Key ones to know:
 - `artifact-review-rule.md`: at every human-gate artifact, output the full MD content in the response and use `AskUserQuestion` with Approve / Request changes.
 - `artifact-paths-rule.md`: all artifact paths must be resolved from the File locations table in `tech-config.md`, never hardcoded.
 - `db-schema-change-rule.md`: every schema change requires a versioned migration file and updated ER diagram in the same commit.
+- `gitignore-rule.md`: every agent that produces files in `src/` must ensure `.gitignore` covers those file types in the same commit. First agent creates the file; all others append only.
 
 ## What NOT to do
 
