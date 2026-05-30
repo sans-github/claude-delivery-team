@@ -10,20 +10,11 @@ This framework gives you all of that, pre-wired and ready to go.
 
 ---
 
-## What you get
+## A full team, under your direction
 
-A full team of senior-level agents that collaborate the way a real team does:
+You get a complete senior engineering team: Product Manager, UX/UI Designer, Software Architect, Engineering Manager, Backend Engineer, Frontend Engineer, Swift Engineer, DevOps Engineer, QA Engineer, and macOS Designer.
 
-- **Product Manager:** turns your requirements into a PRD with acceptance criteria
-- **UX/UI Designer:** produces mocks; reads your brand before touching anything visual
-- **Software Architect:** owns system design and the critical technical decisions
-- **Engineering Manager:** the single intake point for engineering; approves every artifact before downstream work starts
-- **Backend Engineer:** DB schema, API, auth, and cloud infra
-- **Frontend Engineer:** React + TypeScript, state management, routing, integration
-- **Swift Engineer:** SwiftUI apps, Xcode config, App Store delivery
-- **DevOps Engineer:** CI/CD, IaC, observability, security posture
-- **QA Engineer:** test strategy, automation, CI quality gates
-- **macOS Designer:** platform-native interfaces following Apple's HIG
+They collaborate the way a real team does. At every pivotal moment (PRD, mocks, architecture, implementation plan, deployment, release) the team stops and waits for your input before proceeding. **Nothing happens without your approval.** Between checkpoints, agents work autonomously and track their progress so you can pick up exactly where you left off.
 
 ---
 
@@ -48,7 +39,6 @@ This does the following:
 - Copies agents, rules, skills, and templates into `.claude/`
 - Copies this README into `.claude/agents-guide.md`
 - Scaffolds `BACKLOG.md` in your project root (if it doesn't exist)
-- Creates or updates `.gitignore` with standard entries (build output, node_modules, .env, Terraform state, etc.)
 - Creates or updates `CLAUDE.md` with `@.claude/tech-config.md` so agents can resolve artifact paths
 
 Commit the result to lock the version.
@@ -62,6 +52,8 @@ Commit the result to lock the version.
 Claude walks you through setup, gathers requirements, scaffolds the feature folder, and kicks off the full workflow. You approve at every major decision point. Nothing proceeds without you.
 
 Here is what to expect:
+
+After release sign-off, three wrap-up stages run automatically: master baseline update (PM and Designer consolidate into `projects/master/`), documentation refresh (README, CLAUDE.md, and `scripts/dev.sh`), and release sign-off. None are skippable.
 
 ```mermaid
 journey
